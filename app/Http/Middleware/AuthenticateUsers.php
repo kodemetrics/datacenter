@@ -15,9 +15,12 @@ class AuthenticateUsers
      */
     public function handle($request, Closure $next)
     {
-        if(){
+        if(!(empty($request->session()->get('id'))){
 
-            return redirect('home');
+           // return redirect('home');
+        }else{
+            //return redirect('welcome');
+              //$response->toJson('Invalid Credentials');
         }
 
         return $next($request);
