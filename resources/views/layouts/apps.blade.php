@@ -12,7 +12,8 @@
         <title>AEDC - Date Center Access Control</title>
 
         <!--Morris Chart CSS -->
-		<link rel="stylesheet" href="../plugins/morris/morris.css">
+		<link rel="stylesheet" href="{{ URL::asset('plugins/morris/morris.css')}}">
+        <link href="{{ URL::asset('plugins/bootstrap-sweetalert/sweet-alert.css')}}" rel="stylesheet" type="text/css">
 
         <!-- App css -->
         <link href="{{ URL::asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
@@ -23,6 +24,9 @@
         <link href="{{ URL::asset('assets/css/menu.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{ URL::asset('assets/css/responsive.css')}}" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="{{ URL::asset('plugins/switchery/switchery.min.css')}}">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        
 
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -75,7 +79,7 @@
                                     <li class="text-center">
                                         <h5>Hi, {{Session::get('name')}}</h5>
                                     </li>
-                                      <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i> Logout</a></li>
+                                      <li><a href="{{ url('/logout') }}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
                                 </ul>
 
                             </li>
@@ -134,6 +138,16 @@
 
         <div class="wrapper">
                 <div class="container">
+                       <!-- @if(Session::has('message'))
+                            <div class="alert alert-success alert-icon alert-dismissible ">
+                                <div class="message">
+                                    <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                                    <span aria-hidden="true" class="mdi mdi-close"></span></button>
+                                    <strong>{{ Session::get('message') }}</strong>
+                                </div>
+                            </div>
+                        @endif-->
+                        
                     @yield('content')
                 </div>
         </div>
@@ -166,21 +180,33 @@
         <script src="{{ URL::asset('assets/js/jquery.slimscroll.js')}}"></script>
         <script src="{{ URL::asset('assets/js/jquery.scrollTo.min.js')}}"></script>
         <script src="{{ URL::asset('plugins/switchery/switchery.min.js')}}"></script>
-
+        <script src="{{ URL::asset('plugins/bootstrap-sweetalert/sweet-alert.min.js')}}"></script>
+       <!-- <script src="{{ URL::asset('assets/pages/jquery.sweet-alert.init.js')}}"></script>-->
         <!-- Counter js  -->
         <script src="{{ URL::asset('/plugins/waypoints/jquery.waypoints.min.js')}}"></script>
         <script src="{{ URL::asset('/plugins/counterup/jquery.counterup.min.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 
-        <!--Morris Chart-->
+        <!--Morris Chart
 		<script src="{{ URL::asset('/plugins/morris/morris.min.js')}}"></script>
-		<script src="{{ URL::asset('/plugins/raphael/raphael-min.js')}}"></script>
+		<script src="{{ URL::asset('/plugins/raphael/raphael-min.js')}}"></script> -->
 
-        <!-- Dashboard init -->
-        <script src="{{ URL::asset('assets/pages/jquery.dashboard.js')}}"></script>
+        <!-- Dashboard init 
+        <script src="{{ URL::asset('assets/pages/jquery.dashboard.js')}}"></script> -->
 
         <!-- App js -->
+        <script src="{{ URL::asset('js/growl.js')}}"></script>
         <script src="{{ URL::asset('assets/js/jquery.core.js')}}"></script>
         <script src="{{ URL::asset('assets/js/jquery.app.js')}}"></script>
+        <script>
+                var value = "{{ Session::get('message') }}";
+                    if(!!value){
+                       //$.notify( value,"success");
+                        toastr.info(value,'');
+                       //alert(value);
+                    }
+           
+        </script>
 
     </body>
 </html>

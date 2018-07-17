@@ -15,7 +15,7 @@ class CreateDatacentersTable extends Migration
     {
         Schema::create('datacenters', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('location');
             $table->timestamps();
         });

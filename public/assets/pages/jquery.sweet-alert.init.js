@@ -13,7 +13,7 @@
 
     //examples
     SweetAlert.prototype.init = function () {
-
+        
         //Basic
         $('#sa-basic').click(function () {
             swal("Here's a message!");

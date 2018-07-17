@@ -30,6 +30,7 @@
                                         <div class="form-group">
                                             <label >Name</label>
                                             <input type="text" class="form-control" name="name"  placeholder="Enter email">
+                                            <input type="hidden" name="rx" value="{{round(microtime(true))}}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label >Email</label>
@@ -41,6 +42,15 @@
                                               <option  disable>-- Choose --</option>
                                               <option>Self</option>
                                               <option>Vendor</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Datacenter</label>
+                                            <select name="dcenter" class="form-control">
+                                              <option  disable>-- Choose --</option>
+                                                @foreach($datacenter as $d)
+                                                   <option>{{$d->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -81,6 +91,7 @@
                                                         <td>{{$d->reason}}</td>
                                                         <td>{{$d->urgency}}</td>
                                                         <td>{{$d->status}}</td>
+                                                        <td><a href="{{ url('requestaccess/edit',[$d->id]) }}"><i class="mdi mdi-table-edit  mdi-24 "></i></a></td>
                                                         <td><a href="{{ url('requestaccess/delete',[$d->id]) }}"><i class="mdi mdi-delete-forever mdi-24 "></i></a></td>
                                                 </tr>  
                                                 @endforeach

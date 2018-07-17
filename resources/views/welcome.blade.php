@@ -52,6 +52,17 @@
                                     <!--<h4 class="text-uppercase font-bold m-b-0">Sign In</h4>-->
                                 </div>
                                 <div class="account-content">
+                                
+                                @if(Session::has('message'))
+                                    <div class="alert alert-success alert-icon alert-dismissible">
+                                        <div class="icon"><span class="mdi mdi-check"></span></div>
+                                        <div class="message">
+                                            <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                                            <span aria-hidden="true" class="mdi mdi-close"></span></button>
+                                            <strong>{{ Session::get('message') }}</strong>
+                                        </div>
+                                    </div>
+                                @endif
 
                                     <form class="form-horizontal" method="POST">
                                          {{ csrf_field() }}

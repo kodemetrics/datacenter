@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\User;
 
-class AuthenticateUsers
+class Superadmin
 {
     /**
      * Handle an incoming request.
@@ -15,13 +16,12 @@ class AuthenticateUsers
      */
     public function handle($request, Closure $next)
     {
-        if (!empty($request->session()->get('name'))) {
+        $user = User::where('name',$request->session()->get('name'))->first();
+        if ($user->isAdmin==1) {
             return $next($request);
         }else{
-            return redirect('/');
+            return redirect('/dashboard')->with('message','You are not authorized to view this page');
         }
-
-        return redirect('/dashboard');
         
     }
 }

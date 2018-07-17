@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Product;
+use App\Datacenter;
 use App\User;
 use App\Requests;
 use Mail;
@@ -12,17 +12,32 @@ use Session;
 
 class DaccessController extends Controller
 {
+
+    public function __construct(){
+
+             $this->middleware('auth2');
+     }
+
     public function index(Request $request){
         
     }
 
     public function showDasboard(Request $request){
-        return view('dashboard');
+        $all = Requests::all()->count();
+        $today = Requests::whereDate('created_at',date("Y-m-d"))->count();
+        $month = Requests::whereYear('created_at',date("Y"))->whereMonth('created_at',date("m"))->count();
+
+        $data = array(
+            'all'=> $all,'today'=> $today,'month'=> $month
+          );
+
+        return view('dashboard',compact('data'));
     }
 
     public function showRequestaccess(Request $request){
             $data = Requests::where('user_id',Session::get('id'))->get();
-           return view('requestaccess',compact('data'));
+            $datacenter = Datacenter::all();
+           return view('requestaccess',compact('data','datacenter'));
     }
 
     public function showAllrequest(Request $request){
@@ -31,46 +46,95 @@ class DaccessController extends Controller
            return view('allrequest',compact('data'));
        }
 
-    public function showSettings(Request $request){
 
-          // $data = Requests::all();
-           return view('settings');
+    public function editRequest(Requests $id){
+          //$id = Requests::where('id',$id)->get();
+          return view('editrequest',compact('id'));
+       }
+    public function approveRequest(Request $request, $id){
+          $data = Requests::where('rx',$id)->get();
+          return view('approverequest',compact('data'));
        }
 
-    public function deleterequest(Request $request,$id){
+    public function storeApprove(Request $request, $id){
+          $data = Requests::where('rx',$id)->update([
+              'status'=>$request->status,
+              'approvemgr'=>Session::get('name'),
+              'comment'=>$request->comment
+              ]);
+              //dd($request->status);
+             // Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ) {
+              //  $message->to($emailsTo,'')->cc($emailsCC)->subject('Transfer Request');
+              //  $message->from($emailsFrom,$emailsName);
+          return redirect()->back()->with('message','Done');
+       }
 
-          Requests::where('id',$id)->delete();
-          return redirect('requestaccess');
+    public function updateRequest(Request $request,$id){
+
+          Requests::where('id',$id)->update(['name'=>$request->name,
+                                             'email'=>$request->email,
+                                             'whom'=>$request->whom,
+                                             'urgency'=>$request->urgency,
+                                             'reason'=>$request->reason]);
+          return redirect('requestaccess')->with('message','Updated Sucessfully');
+       }
+
+    public function deleteRequest(Request $request,$id){
+
+         $delete =  Requests::where('id',$id)->where('status','Pending')->delete();
+           if($delete){
+              return redirect('requestaccess')->with('message','Deleted Sucessfully');
+           }else{
+            return redirect('requestaccess')->with('message','Cannot Delete Already Approved Request');
+           }
        }
        
     public function storeRequestaccess(Request $request){
               
-      /*$nerd = new Requests;
+        $nerd = new Requests;
         $nerd->user_id  = Session::get('id');
         $nerd->name  = $request->name;
+        $nerd->rx  = $request->rx;
         $nerd->email = $request->email;
         $nerd->whom = $request->whom;
         $nerd->reason = $request->reason;
         $nerd->urgency  = $request->urgency;
-        //$nerd->comment  = $request->comment= $request->comment ?? '';
+        $nerd->dcenter  = $request->dcenter;
+        $nerd->comment  = $request->comment= $request->comment ?? '';
         $nerd->approvemgr  = $request->approvemgr= $request->approvemgr ?? '';
         $nerd->status = $request->status = $request->status ?? 'Pending';
-        $nerd->save();*/
+       // $nerd->save();
+      
+        $data = array(
+            'name'=> $request->name,'email'=> $request->email,
+            'whom'=> $request->whom,'reason'=> $request->reason,
+            'dcenter'=>$request->dcenter,'urgency'=>$request->urgency,
+            'url'=> "http://localhost:8000/requestaccess/approve/".$request->rx."/1",
+          );
 
-        $data = User::all();
-        $emailsTo = [];
-        $emailsLen = count($data);
-        for($i = 0; $i< $emailsLen; $i++){
-            array_push($emailsTo,$data[$i]['email']);
-        }
-        dd($emailsTo);
-    
-        /*  Mail::send('mail', compact('data') , function($message) use($emailsTo) {
-            $message->to($emailsTo,'')->subject('Transfer Request');
-            $message->from('kingsley.okafor@hampocgroup.com','');
-        }); */
+                $To = User::where('role_id',2)->get();
+                $emailsTo = [];
+                $emailsLen = count($To);
+                for($i = 0; $i< $emailsLen; $i++){
+                    array_push($emailsTo,$To[$i]['email']);
+                }
+                
+                $emailsCC = [];
+                $Cc = User::where('role_id',1)->get();
+                foreach($Cc as $Cc){
+                    array_push($emailsCC,$Cc->email);
+                }
+                
+                $emailsFrom = $request->email;
+                $emailsName = $request->name;
+
+               
+            Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ) {
+            $message->to($emailsTo,'')->cc($emailsCC)->subject('Transfer Request');
+            $message->from($emailsFrom,$emailsName);
+        });
         
-         return redirect()->back();
+         return redirect()->back()->with('message','Created Sucessfully');
        }
 
 

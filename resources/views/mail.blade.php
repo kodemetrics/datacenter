@@ -366,13 +366,34 @@
                 <th colspan="2">Transfer Information</th>
               </tr>
           </thead>
-          <tbody>
+           <tbody>
+               
+               <tr>
+                  <td>Name:</td>
+                  <td>{{$data['name']}}</td>
+               </tr>
+               <tr>
+                  <td>Whom:</td>
+                  <td>{{$data['whom']}}</td>
+               </tr>
+               <tr>
+                  <td>DataCenter:</td>
+                  <td>{{$data['dcenter']}}</td>
+               </tr>
+               <tr>
+                  <td>Urgency:</td>
+                  <td>{{$data['urgency']}}</td>
+               </tr>
+               <tr>
+                  <td>Reason:</td>
+                  <td>{{$data['reason']}}</td>
+               </tr>
               
             </tbody>
             <tfoot>
             <tr>
                   <td colspan="2">
-                    <span>To approve please follow this link</span>  <a class="link" href="">click here</a>  
+                    <span>To approve please follow this link</span>  <a class="link" href="{{$data['url']}}">click here</a>  
                   </td>
               </tr>
               <tr>

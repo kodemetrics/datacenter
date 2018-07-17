@@ -3591,3 +3591,8 @@ table.dataTable thead th.sorting_desc:after {
 .google-chart .chart {
   display: inline-block;
 }
+
+.alert {
+  margin-bottom: 0px;
+  margin-top: 10px;
+}

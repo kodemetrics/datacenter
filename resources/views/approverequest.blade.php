@@ -9,11 +9,11 @@
                             <div class="btn-group pull-right">
                                 <ol class="breadcrumb hide-phone p-0 m-0">
                                     <li class="active">
-                                        All Request
+                                        Approve
                                     </li>
                                 </ol>
                             </div>
-                            <h4 class="page-title">All Request</h4>
+                            <h4 class="page-title">Approve</h4>
                         </div>
                     </div>
                 </div>
@@ -32,8 +32,7 @@
                                                 <th>For whom</th>
                                                 <th>Reason</th>
                                                 <th>Urgency</th>
-                                                <th>Approval Mgr</th>
-                                                <th>Status</th>
+                                                <th>Approval Status</th>
                                                 <th>ID</th>
                                              </tr>
                                           </thead>
@@ -46,14 +45,33 @@
                                                         <td>{{$d->whom}}</td>
                                                         <td>{{$d->reason}}</td>
                                                         <td>{{$d->urgency}}</td>
-                                                        <td>{{$d->approvemgr}}</td>
                                                         <td>{{$d->status}}</td>
                                                         <td>{{$d->id}}</td>
                                                 </tr>  
                                                 @endforeach
                                           </tbody>
                                      </table>
-                                  
+                                   <div class="row">
+                                       
+                                     <form method="POST" class="col-sm-6">
+                                         {{ csrf_field() }}
+                                         <div class="form-group">
+                                            <label>Approve</label>
+                                             <select name="status" class="form-control" >
+                                                 <option value="" disable>--choose--</option>
+                                                 <option value="Approved">Yes</option>
+                                                 <option value="Rejected">No</option>
+                                             </select>
+                                         </div>
+                                         <div class="form-group">
+                                            <label>Comments</label>
+                                            <textarea name="comment" class="form-control" cols="30" rows="10"></textarea>
+                                         </div>
+
+                                         <input type="submit" value="submit" name="submit" class="btn btn-primary">
+                                     
+                                     </form>
+                                     </div>
                           </div>
                      </div>
                 </div>
