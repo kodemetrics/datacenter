@@ -32,6 +32,9 @@ class DaccessController extends Controller
           );
 
         return view('dashboard',compact('data'));
+       // return User::find(1)->requests;
+       // return  $task = Requests::with('user')->where('id', 1)->get();
+        //return Requests::find(2)->user;
     }
 
     public function showRequestaccess(Request $request){
@@ -90,7 +93,15 @@ class DaccessController extends Controller
        }
        
     public function storeRequestaccess(Request $request){
-              
+        $request->validate([
+            'name' => 'required',
+            'rx' => 'required',
+            'email' => 'required',
+            'whom' => 'required',
+            'reason' => 'required',
+            'urgency' => 'required',
+            'dcenter' => 'required',
+        ]);      
         $nerd = new Requests;
         $nerd->user_id  = Session::get('id');
         $nerd->name  = $request->name;
@@ -103,16 +114,16 @@ class DaccessController extends Controller
         $nerd->comment  = $request->comment= $request->comment ?? '';
         $nerd->approvemgr  = $request->approvemgr= $request->approvemgr ?? '';
         $nerd->status = $request->status = $request->status ?? 'Pending';
-       // $nerd->save();
+        $nerd->save();
       
         $data = array(
             'name'=> $request->name,'email'=> $request->email,
             'whom'=> $request->whom,'reason'=> $request->reason,
             'dcenter'=>$request->dcenter,'urgency'=>$request->urgency,
-            'url'=> "http://localhost:8000/requestaccess/approve/".$request->rx."/1",
+            'url'=> "http://localhost:8000/requestaccess/approve/".$request->rx,
           );
 
-                $To = User::where('role_id',2)->get();
+                $To = User::where('role_id',3)->get();
                 $emailsTo = [];
                 $emailsLen = count($To);
                 for($i = 0; $i< $emailsLen; $i++){
@@ -120,7 +131,7 @@ class DaccessController extends Controller
                 }
                 
                 $emailsCC = [];
-                $Cc = User::where('role_id',1)->get();
+                $Cc = User::where('role_id',2)->get();
                 foreach($Cc as $Cc){
                     array_push($emailsCC,$Cc->email);
                 }
@@ -130,7 +141,7 @@ class DaccessController extends Controller
 
                
             Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ) {
-            $message->to($emailsTo,'')->cc($emailsCC)->subject('Transfer Request');
+            $message->to($emailsTo,'')->cc($emailsCC)->subject('Datacenter Access Request');
             $message->from($emailsFrom,$emailsName);
         });
         

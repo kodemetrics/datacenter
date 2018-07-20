@@ -66,7 +66,6 @@ class LoginController extends Controller{
        // $url2 = "http://adservice.abujaelectricity.com/auth/group";
 
         $fields_string = 'username='.$request->email.'&password='.$request->password;
-        $password = $request->password;
         //open connection
         $ch = curl_init();
 
@@ -78,17 +77,17 @@ class LoginController extends Controller{
         
         //execute post
         $result = curl_exec($ch);
-        // dd($result);
         $result = json_decode($result, true);
+        array_push($result,$request->password);
         // dd($result);
 
         //close connection
         curl_close($ch);
 
-        return $this->objectify($password,$result);
+        return $this->objectify($result);
     }
 
-    protected function objectify($password,$apiCallResult){
+    protected function objectify($apiCallResult){
         
         //$obj = new \App\AuthCallResult();
         $msg = $apiCallResult['msg'];
@@ -101,14 +100,15 @@ class LoginController extends Controller{
                         $obj->role_id = 1;
                         $obj->staff_id = $apiCallResult['data']['staffnumber']= $apiCallResult['data']['staffnumber'] ?? 0;
                         $obj->name = $apiCallResult['data']['name'];
-                        $obj->password = '';
+                        $obj->password = bcrypt($apiCallResult[0]);
                         $obj->phoneno = $apiCallResult['data']['mobile_phone']; 
                         $obj->email = $apiCallResult['data']['mail'];
                         $obj->job_title = $apiCallResult['data']['job_title'];
                         $obj->department = $apiCallResult['data']['department'];
                         $obj->isAdmin = 0;
                         $obj->save();
-
+                         
+                        $data = User::where('email',$apiCallResult['data']['mail'])->get();
                         Session::put('id', $data[0]['id']);
                         Session::put('email', $apiCallResult['data']['mail']);
                         Session::put('name', $apiCallResult['data']['name']);

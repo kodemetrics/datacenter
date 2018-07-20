@@ -7,6 +7,7 @@ use App\Datacenter;
 use App\Role;
 use App\User;
 use App\Requests;
+use DB;
 
 class SettingsController extends Controller
 {
@@ -20,10 +21,13 @@ class SettingsController extends Controller
         $roles = Role::all();
         $datacenters = Datacenter::all();
         $users = User::all();
-        $approves = User::where('role_id',2)->get();
+        //$approves = User::where('role_id',2)->get();
         $requests = Requests::onlyTrashed()->get();
+        $approves =  DB::table('users')->join('roles', 'users.role_id', '=', 'roles.id')
+                   ->whereIn('users.role_id', [2, 3])->select('users.*', 'roles.name as rolename')->get();
             
         return view('settings',compact('roles','datacenters','users','approves','requests'));
+        //return $approves;
      }
 
     public function addDatacenter(Request $request){
@@ -64,5 +68,6 @@ class SettingsController extends Controller
          Requests::onlyTrashed()->where('id',$id)->forceDelete();
         return redirect()->back()->with('message','Deleted Succesfully');
      }
+
 
 }

@@ -39,7 +39,7 @@
                                         <div class="form-group">
                                             <label >For Whom</label>
                                             <select name="whom" class="form-control">
-                                              <option  disable>-- Choose --</option>
+                                              <option selected disabled>-- Choose --</option>
                                               <option>Self</option>
                                               <option>Vendor</option>
                                             </select>
@@ -47,7 +47,7 @@
                                         <div class="form-group">
                                             <label>Datacenter</label>
                                             <select name="dcenter" class="form-control">
-                                              <option  disable>-- Choose --</option>
+                                              <option  selected disabled>-- Choose --</option>
                                                 @foreach($datacenter as $d)
                                                    <option>{{$d->name}}</option>
                                                 @endforeach
@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             <label >Urgency</label>
                                             <select name="urgency" class="form-control">
-                                              <option disable>-- Choose --</option>
+                                              <option selected disabled>-- Choose --</option>
                                               <option>Low</option>
                                               <option>Medium</option>
                                               <option>High</option>

@@ -106,6 +106,7 @@
                                         <div class="form-group">
                                                 <label>Role</label>
                                                 <select name="role" class="form-control">
+                                                  <option selected disabled>--Choose--</option>
                                                 @foreach($roles as $role)
                                                    <option value="{{$role->id}}">{{$role->name}}</option>
                                                  @endforeach
@@ -115,7 +116,7 @@
                                         <div  class="form-group">
                                                <label>IsAdmin</label>
                                                <select name="isAdmin" class="form-control">
-                                                   <option disabled>--choose--</option>
+                                                   <option selected disabled>--Choose--</option>
                                                    <option value="1">Yes</option>
                                                    <option value="0">No</option>
                                                </select>
@@ -138,7 +139,7 @@
                                                     @foreach($approves as $approve)
                                                             <tr>
                                                                 <td>{{$approve->id}}</td>
-                                                                <td>{{$approve->role_id}}</td>
+                                                                <td>{{$approve->rolename}}</td>
                                                                 <td>{{$approve->name}}</td>
                                                                 <td>{{$approve->email}}</td>
                                                                 <td><a href="{{ url('settings/addapprovingmgr/delete',[$approve->id]) }}"><i class="mdi mdi-delete-forever mdi-24 "></i></a></td>
@@ -172,7 +173,7 @@
                                                 <tr>
                                                     <td>{{$role->id}}</td>
                                                     <td>{{$role->name}}</td>
-                                                    <td><a href="{{ url('settings/addrole/delete',[$role->id]) }}"><i class="mdi mdi-delete-forever mdi-24 "></i></a></td>
+                                                    <td><!--<a href="{{ url('settings/addrole/delete',[$role->id]) }}"><i class="mdi mdi-delete-forever mdi-24 "></i></a>--></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

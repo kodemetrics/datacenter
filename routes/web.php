@@ -36,9 +36,10 @@ Route::post('/settings/addrole','SettingsController@addRoles');
 Route::post('/settings/addapprovingmgr','SettingsController@addApprovingmgr');
 Route::get('/settings','SettingsController@showSettings');
 Route::get('/settings/adddatacenter/delete/{id}','SettingsController@deleteDatacenter');
-Route::get('/settings/addrole/delete/{id}','SettingsController@deleteRoles');
+//Route::get('/settings/addrole/delete/{id}','SettingsController@deleteRoles');
 Route::get('/settings/trash/delete/{id}','SettingsController@deleteTrash');
 Route::get('/settings/addapprovingmgr/delete/{id}','SettingsController@deleteApprovingmgr');
+Route::get('/settings/addapprovingmgr/call/','Controller@processCall');
 
 Route::get('/adddatacenter','DaccessController@showAdddatacenter');
 Route::get('/addrole','DaccessController@showAddrole');

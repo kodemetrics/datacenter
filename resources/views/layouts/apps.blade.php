@@ -57,6 +57,7 @@
                         <!-- Image Logo -->
                         <a href="{{ url('dashboard') }}" class="logo">
                            <!-- <img src="assets/images/logo.png" alt="" height="30">-->
+                           <b style="font-size:28px;font-weight:bold;">AEDC</b>
                         </a>
 
                     </div>
@@ -66,15 +67,15 @@
                     <div class="menu-extras">
 
                         <ul class="nav navbar-nav navbar-right pull-right">
-                            <li class="navbar-c-items">
+                          <!--  <li class="navbar-c-items">
                                 <form role="search" class="navbar-left app-search pull-left hidden-xs">
                                      <input type="text" placeholder="Search..." class="form-control">
                                      <a href=""><i class="fa fa-search"></i></a>
                                 </form>
-                            </li>
+                            </li>-->
 
                             <li class="dropdown navbar-c-items">
-                                <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+                                <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><i class="ti ti-user  mdi-18"></i><!--<img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle">--> </a>
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li class="text-center">
                                         <h5>Hi, {{Session::get('name')}}</h5>
