@@ -112,9 +112,16 @@ return [
     |
     */
 
+    'stream' => [
+        'ssl' => [
+           'allow_self_signed' => true,
+           'verify_peer' => false,
+           'verify_peer_name' => false,
+        ],
+     ],
+
     'markdown' => [
         'theme' => 'default',
-
         'paths' => [
             resource_path('views/vendor/mail'),
         ],

@@ -363,7 +363,7 @@
         <table class="table">
           <thead>
               <tr>
-                <th colspan="2">Transfer Information</th>
+                <th colspan="2">DataCenter Access Request </th>
               </tr>
           </thead>
            <tbody>
@@ -381,8 +381,12 @@
                   <td>{{$data['dcenter']}}</td>
                </tr>
                <tr>
-                  <td>Urgency:</td>
+                  <td>Priority:</td>
                   <td>{{$data['urgency']}}</td>
+               </tr>
+               <tr>
+                  <td>Supervisor Name:</td>
+                  <td>{{$data['sname']}}</td>
                </tr>
                <tr>
                   <td>Reason:</td>
@@ -391,18 +395,12 @@
               
             </tbody>
             <tfoot>
-            <tr>
+              <tr>
                   <td colspan="2">
                     <span>To approve please follow this link</span>  <a class="link" href="{{$data['url']}}">click here</a>  
                   </td>
               </tr>
-              <tr>
-                  <td colspan="2" class="footer">
-                      Abuja Electricity Distribution Company Plc |
-                      No 1 Ziguinchor Street, Off IBB Way, Wuse Zone 4, FCT
-                      Website:<a href="https://www.abujaelectricity.com">www.abujaelectricity.com </a>
-                  </td>
-              </tr>
+
             </tfoot>
         </table>
        

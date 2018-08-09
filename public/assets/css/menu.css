@@ -57,7 +57,7 @@ File: Menu
   letter-spacing: 1px;
   line-height: 60px;
   text-transform: uppercase;
-  float: left;
+  float: right;
 }
 #topnav .topbar-main .badge {
   position: absolute;

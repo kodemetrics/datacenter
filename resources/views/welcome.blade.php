@@ -68,7 +68,7 @@
                                          {{ csrf_field() }}
                                         <div class="form-group ">
                                             <div class="col-xs-12">
-                                                <input class="form-control" name="email" type="email" required="" placeholder="Email">
+                                                <input class="form-control" name="email" type="text" required="" placeholder="firstname.lastname">
                                             </div>
                                         </div>
 

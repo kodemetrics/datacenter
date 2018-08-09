@@ -36,6 +36,201 @@
         <![endif]-->
 
         <script src="{{ URL::asset('assets/js/modernizr.min.js')}}"></script>
+        <style>
+       /*Now the CSS*/
+* {margin: 0; padding: 0;}
+
+.tree ul {
+	padding-top: 20px; position: relative;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree li {
+	float: left; text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+    font-size:18px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+	content: '';
+	position: absolute; top: 0; right: 50%;
+	border-top: 1px solid #ccc;
+	width: 50%; height: 20px;
+}
+.tree li::after{
+	right: auto; left: 50%;
+	border-left: 1px solid #ccc;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+	border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+	border-right: 1px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+	content: '';
+	position: absolute; top: 0; left: 50%;
+	border-left: 1px solid #ccc;
+	width: 0; height: 20px;
+}
+
+.tree li a{
+    
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: #666;
+    background-color:#ccc;
+	font-family: arial, verdana, tahoma;
+	font-size: 11px;
+	display: inline-block;
+    
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also
+.tree li a:hover, .tree li a:hover+ul li a {
+	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+}*/
+/*Connector styles on hover*/
+.tree li a:hover+ul li::after, 
+.tree li a:hover+ul li::before, 
+.tree li a:hover+ul::before, 
+.tree li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+}
+.sub{
+    position:relative;
+    background-image: url("assets/images/sub.jpg");
+    width:100%;
+    height:450px;
+}
+/*Thats all. I hope you enjoyed it.
+Thanks :)*/
+
+.flat-icon{
+    background-image: url("assets/images/capture023.png") ;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:transparent;
+    display:inline;
+    width:39px;
+    height:150px;
+    padding:5px;
+}
+
+.tree li a.flat-icon {
+    border: none;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    background-color:transparent;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    }
+
+ .tree li a.rm,
+ .tree li a.in,
+ .tree li a.cable-feeder,
+ .tree li a.incoming33kv-feeder
+  {
+    background-image: url("assets/images/capture01.png") ;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color:transparent;
+    display:inline;
+    width:100px;
+    height:120px;
+    padding:5px;
+    border: none;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    background-color:transparent;
+    font-family: arial, verdana, tahoma;
+    font-size: 14px;
+    font-weight:bold;
+    display: inline-block;
+    }
+ .tree li a.value
+  {
+    background-color:transparent;
+    display:inline;
+    width:100px;
+    height:120px;
+    padding:5px;
+    border: none;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    background-color:transparent;
+    font-family: arial, verdana, tahoma;
+    font-size: 14px;
+    font-weight:bold;
+    display: inline-block;
+    }
+    .tree li a.in{
+        background-image: url("assets/images/capture024.png") ;
+        width:204px;
+        height:223px;
+    }
+    .tree li a.cable-feeder{
+        background-image: url("assets/images/capture025.png") ;
+        width:468px;
+        height:51px;
+    }
+    .tree li a.incoming33kv-feeder{
+        background-image: url("assets/images/capture026.png") ;
+        width:auto;
+        height:176px;
+    }
+    body{
+        zoom: 100%;
+    }
+    </style>
 
     </head>
 
@@ -56,8 +251,8 @@
                         <!--</a>-->
                         <!-- Image Logo -->
                         <a href="{{ url('dashboard') }}" class="logo">
-                            <img src="assets/images/logo.png" alt="" height="30">
-                           <!--<b style="font-size:28px;font-weight:bold;">AEDC</b>-->
+                           <img src="assets/images/logo.png" alt="" height="30">
+                          <!-- <b style="font-size:28px;font-weight:bold;">AEDC</b>-->
                         </a>
 
                     </div>
@@ -113,7 +308,7 @@
                                 <a href="{{ url('dashboard') }}"><i class="mdi mdi-view-dashboard"></i>Dashboard</a>
                             </li>
 
-                            <li class="has-submenu">
+                           <!-- <li class="has-submenu">
                                 <a href="{{ url('requestaccess') }}"><i class="mdi mdi-google-pages"></i>Make Request</a>
                             </li>
 
@@ -121,11 +316,11 @@
                                 <a href="{{ url('allrequest') }}"><i class="mdi mdi-comment-text"></i> All Request</a>
                             </li>
 
-                           @if(Session::get('isAdmin') ==1)
-                                <li class="has-submenu">
-                                    <a href="{{ url('settings') }}"><i class="mdi mdi mdi-settings "></i>Settings</a>
-                                </li>
-                           @endif
+
+                            <li class="has-submenu">
+                                <a href="{{ url('settings') }}"><i class="mdi mdi mdi-settings "></i>Settings</a>
+                            </li>
+                            -->
 
                       
                         </ul>
@@ -159,7 +354,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 text-center">
-                                © <?php echo date('Y') ?> Abuja Electricity Distribution Company
+                              <!--  © <?php echo date('Y') ?> Abuja Electricity Distribution Company -->
                             </div>
                         </div>
                     </div>

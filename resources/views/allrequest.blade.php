@@ -31,7 +31,9 @@
                                                 <th>Name</th>
                                                 <th>For whom</th>
                                                 <th>Reason</th>
-                                                <th>Urgency</th>
+                                                <th>Priority</th>
+                                                <th>Supervisor name</th>
+                                                <th>Aware</th>
                                                 <th>Approval Mgr</th>
                                                 <th>Status</th>
                                                 <th>ID</th>
@@ -46,6 +48,8 @@
                                                         <td>{{$d->whom}}</td>
                                                         <td>{{$d->reason}}</td>
                                                         <td>{{$d->urgency}}</td>
+                                                        <td>{{$d->sname}}</td>
+                                                        <td>{{$d->awareness}}</td>
                                                         <td>{{$d->approvemgr}}</td>
                                                         <td>{{$d->status}}</td>
                                                         <td>{{$d->id}}</td>

@@ -29,7 +29,7 @@
                                         {{ csrf_field() }}
                                         <div class="form-group">
                                             <label >Name</label>
-                                            <input type="text" class="form-control" name="name"  placeholder="Enter email">
+                                            <input type="text" class="form-control" name="name"  placeholder="Enter name">
                                             <input type="hidden" name="rx" value="{{round(microtime(true))}}" readonly>
                                         </div>
                                         <div class="form-group">
@@ -37,11 +37,11 @@
                                             <input type="email" class="form-control" name="email"  placeholder="Enter email">
                                         </div>
                                         <div class="form-group">
-                                            <label >For Whom</label>
+                                            <label >Whom</label>
                                             <select name="whom" class="form-control">
                                               <option selected disabled>-- Choose --</option>
-                                              <option>Self</option>
-                                              <option>Vendor</option>
+                                              <option>Staff</option>
+                                              <!--<option selected disabled>Vendor</option>-->
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -55,13 +55,27 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label >Urgency</label>
+                                            <label >Priority</label>
                                             <select name="urgency" class="form-control">
                                               <option selected disabled>-- Choose --</option>
                                               <option>Low</option>
                                               <option>Medium</option>
                                               <option>High</option>
                                             </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label >Is Your Supervisor Aware?</label>
+                                            <select name="awareness" class="form-control">
+                                              <option selected disabled>-- Choose --</option>
+                                              <option>No</option>
+                                              <option>Yes</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Supervisor name</label>
+                                            <input type="text" class="form-control" name="sname"  placeholder="Supervisor name">
                                         </div>
 
                                         <div class="form-group">

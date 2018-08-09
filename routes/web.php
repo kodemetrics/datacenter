@@ -11,6 +11,9 @@
 |
 */
 
+
+
+
 Route::get('/', function () {
     return view('Welcome');
 });
@@ -22,12 +25,13 @@ Route::get('/demo', function () {
 //Route::post('/','LoginController@index');  
 Route::get('/logout','LoginController@logout');  
 Route::post('/','LoginController@apiAuth');  
+Route::post('/mobile','DaccessController@storeMobile');  
 Route::get('/dashboard','DaccessController@showDasboard');
 Route::get('/requestaccess','DaccessController@showRequestaccess');
 Route::get('/requestaccess/edit/{id}','DaccessController@editRequest');
 Route::get('/requestaccess/delete/{id}','DaccessController@deleteRequest');
-Route::get('/requestaccess/approve/{id}','DaccessController@approveRequest');
-Route::post('/requestaccess/approve/{id}','DaccessController@storeApprove');
+Route::get('/requestaccess/approve/{id}','DaccessController@approveRequest')->middleware('approve');
+Route::post('/requestaccess/approve/{id}','DaccessController@storeApprove')->middleware('approve');
 Route::get('/allrequest','DaccessController@showAllrequest');
 
 

@@ -23,6 +23,8 @@ class CreateRequestsTable extends Migration
             $table->string('dcenter',50);
             $table->string('reason');
             $table->string('comment');
+            $table->string('awareness');
+            $table->string('sname');
             $table->string('urgency',50);
             $table->string('status');
             $table->string('approvemgr');

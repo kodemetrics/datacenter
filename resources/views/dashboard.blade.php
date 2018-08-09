@@ -27,8 +27,8 @@
                             <i class="mdi mdi-chart-areaspline widget-one-icon"></i>
                             <div class="wigdet-one-content">
                                 <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="Statistics">Statistics</p>
-                                <h2>{{$data['all'] }}<small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
-                               <!-- <p class="text-muted m-0"><b>Last:</b> 30.4k</p>-->
+                                <h2>{{$data['allA'] }}<small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                                <p class="text-muted m-0"><b>Last:</b>{{$data['all'] }}</p>
                             </div>
                         </div>
                     </div><!-- end col -->
@@ -37,9 +37,9 @@
                         <div class="card-box widget-box-one">
                             <i class="mdi mdi-account-convert widget-one-icon"></i>
                             <div class="wigdet-one-content">
-                                <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User Today">User Today</p>
-                                <h2>{{$data['today'] }} <small><i class="mdi mdi-arrow-down text-danger"></i></small></h2>
-                                <!--<p class="text-muted m-0"><b>Last:</b> 1250</p>-->
+                                <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User Today"> Today</p>
+                                <h2>{{$data['todayA'] }} <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                                <p class="text-muted m-0"><b>Last:</b> {{$data['today'] }}</p>
                             </div>
                         </div>
                     </div><!-- end col -->
@@ -48,9 +48,9 @@
                         <div class="card-box widget-box-one">
                             <i class="mdi mdi-layers widget-one-icon"></i>
                             <div class="wigdet-one-content">
-                                <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User This Month">User This Month</p>
-                                <h2>{{$data['month'] }} <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
-                               <!-- <p class="text-muted m-0"><b>Last:</b> 40.33k</p>-->
+                                <p class="m-0 text-uppercase font-600 font-secondary text-overflow" title="User This Month"> This Month</p>
+                                <h2>{{$data['monthA'] }} <small><i class="mdi mdi-arrow-up text-success"></i></small></h2>
+                               <p class="text-muted m-0"><b>Last:</b> {{$data['month'] }}</p>
                             </div>
                         </div>
                     </div><!-- end col -->

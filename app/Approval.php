@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Approval extends Model
 {
-    //
+    protected $table = 'logs';
 }

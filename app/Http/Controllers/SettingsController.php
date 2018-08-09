@@ -7,7 +7,9 @@ use App\Datacenter;
 use App\Role;
 use App\User;
 use App\Requests;
+use App\Approval;
 use DB;
+
 
 class SettingsController extends Controller
 {

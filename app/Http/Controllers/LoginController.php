@@ -64,8 +64,13 @@ class LoginController extends Controller{
        // $url = "https://pics.abujaelectricity.com/login/auth"
        // $url1 = "http://adservice.abujaelectricity.com/auth/detail";
        // $url2 = "http://adservice.abujaelectricity.com/auth/group";
-
-        $fields_string = 'username='.$request->email.'&password='.$request->password;
+           $fields_string = "";
+          if(strpos($request->email, '@abujaelectricity.com')){
+            $fields_string .= 'username='.$request->email.'&password='.$request->password;
+          }else{
+             $fields_string .= 'username='.$request->email."@abujaelectricity.com".'&password='.$request->password;
+          }
+        //$fields_string = 'username='.$request->email."@abujaelectricity.com".'&password='.$request->password;
         //open connection
         $ch = curl_init();
 
@@ -110,12 +115,14 @@ class LoginController extends Controller{
                          
                         $data = User::where('email',$apiCallResult['data']['mail'])->get();
                         Session::put('id', $data[0]['id']);
+                        Session::put('isAdmin', $data[0]['isAdmin']);
                         Session::put('email', $apiCallResult['data']['mail']);
                         Session::put('name', $apiCallResult['data']['name']);
 
                        return redirect('dashboard')->with('message','Welcome..!');
                     }else{
                         Session::put('id', $data[0]['id']);
+                        Session::put('isAdmin', $data[0]['isAdmin']);
                         Session::put('email', $apiCallResult['data']['mail']);
                         Session::put('name', $apiCallResult['data']['name']);
 

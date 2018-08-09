@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\User;
+use View;
+use Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+
+        //$user = User::where('id',Session::get('id'))->first();
+        //View::share('user', $user);
     }
 
     /**
