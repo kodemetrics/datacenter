@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use Session;
+use App\AuditLog;
 
 class LoginController extends Controller{
 
@@ -30,6 +31,7 @@ class LoginController extends Controller{
 
 
     public function logout(){
+          AuditLog::create(['username' => Auth::user()->name,'action' => 'Logged Out','ipAddress' =>\Request::ip()]);
           Session::flush();
           Auth::logout();
           return redirect('/');
@@ -40,7 +42,7 @@ class LoginController extends Controller{
 
         //$input = $request->all();
         $email = $request->email;
-        $password = Hash::make($request->password);
+        //$password = Hash::make($request->password);
         $data = User::where('email',$request->email)
                     ->where('password',$request->password)->get();
         
@@ -50,14 +52,18 @@ class LoginController extends Controller{
             $request->session()->put('name', $data[0]['name']);
             $request->session()->put('id', $data[0]['id']);
             //$request->session()->flush();
-
-            return redirect('dashboard');
+             $data = \Session::get('_previous');
+                       $url = $data['url'];
+                       dd($url);
+            //return redirect('dashboard');
 
         }else{
             //return view('import_export');
             return response()->json('Failed');
         }  
     }
+
+  
 
 
     protected function apiAuth(Request $request, $url = "https://pics.abujaelectricity.com/login/auth"){
@@ -70,7 +76,7 @@ class LoginController extends Controller{
           }else{
              $fields_string .= 'username='.$request->email."@abujaelectricity.com".'&password='.$request->password;
           }
-        //$fields_string = 'username='.$request->email."@abujaelectricity.com".'&password='.$request->password;
+
         //open connection
         $ch = curl_init();
 
@@ -119,14 +125,19 @@ class LoginController extends Controller{
                         Session::put('email', $apiCallResult['data']['mail']);
                         Session::put('name', $apiCallResult['data']['name']);
 
-                       return redirect('dashboard')->with('message','Welcome..!');
+                       //return redirect('dashboard')->with('message','Welcome..!');
+                       return redirect()->intended();
                     }else{
                         Session::put('id', $data[0]['id']);
                         Session::put('isAdmin', $data[0]['isAdmin']);
                         Session::put('email', $apiCallResult['data']['mail']);
                         Session::put('name', $apiCallResult['data']['name']);
-
-                        return redirect('dashboard')->with('message','Welcome back');
+                           
+                       // return redirect('dashboard')->with('message','Welcome back');
+                       return redirect()->intended();
+                       /*$data = \Session::get('_previous');
+                       $url = $data['url'];
+                       dd($url);*/
                     }
                 }else{
                     return redirect('/')->with('message','Invalid Login Credentials');

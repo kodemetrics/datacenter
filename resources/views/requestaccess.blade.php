@@ -26,8 +26,17 @@
                             <div class="row">
                                 <div class="col-md-6 m-t-10">
                                     <form method="POST">
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         {{ csrf_field() }}
-                                        <div class="form-group">
+                                      <!--  <div class="form-group">
                                             <label >Name</label>
                                             <input type="text" class="form-control" name="name"  placeholder="Enter name">
                                             <input type="hidden" name="rx" value="{{round(microtime(true))}}" readonly>
@@ -35,14 +44,29 @@
                                         <div class="form-group">
                                             <label >Email</label>
                                             <input type="email" class="form-control" name="email"  placeholder="Enter email">
-                                        </div>
+                                        </div>-->
                                         <div class="form-group">
                                             <label >Whom</label>
-                                            <select name="whom" class="form-control">
+                                            <select name="whom" class="form-control" id="whom">
                                               <option selected disabled>-- Choose --</option>
                                               <option>Staff</option>
-                                              <!--<option selected disabled>Vendor</option>-->
+                                              <option>Vendor</option>
                                             </select>
+                                            <input type="hidden" name="id" value="{{round(microtime(true))}}" readonly>
+                                        </div>
+                                        <div class="vendor">
+                                             <div class="form-group">
+                                                <label >Vendor name</label>
+                                                <input type="text" name="vname" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label >Vendor organization</label>
+                                                <input type="text" name="vorg" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label >Vendor Phone Number</label>
+                                                <input type="text" name="vmobileno" class="form-control">
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Datacenter</label>
@@ -75,7 +99,13 @@
 
                                         <div class="form-group">
                                             <label>Supervisor name</label>
-                                            <input type="text" class="form-control" name="sname"  placeholder="Supervisor name">
+                                            <!--<input type="text" class="form-control" name="sname"  placeholder="Supervisor name">-->
+                                            <select name="sname" class="form-control">
+                                              <option  selected disabled>-- Choose --</option>
+                                                @foreach($users as $user)
+                                                   <option value="{{$user->email}}">{{$user->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="form-group">
@@ -107,11 +137,11 @@
                                                         <td>{{$d->status}}</td>
                                                         <td><a href="{{ url('requestaccess/edit',[$d->id]) }}"><i class="mdi mdi-table-edit  mdi-24 "></i></a></td>
                                                         <td><a href="{{ url('requestaccess/delete',[$d->id]) }}"><i class="mdi mdi-delete-forever mdi-24 "></i></a></td>
-                                                </tr>  
+                                                </tr>
                                                 @endforeach
                                           </tbody>
                                      </table>
-                                </div>    
+                                </div>
 
                      </div>
                 </div>

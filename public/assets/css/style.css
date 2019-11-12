@@ -1,0 +1,37 @@
+.copyright{
+    border: 1px solid #ccc;
+    background-color: #e3e3e3;
+    height: 40px;
+    clear: both;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+   }
+   .copyright .sm-copyright p {
+     line-height: 40px;
+   }
+   .copyright ul {
+     list-style: none;
+     padding: 0px;
+     margin: 0px;
+     float: right;
+   }
+   .copyright ul li::after{
+     margin-left: 10px;
+     content: "|";
+     font-size: 12px;
+   }
+   .copyright ul li:last-child::after{
+     display: none
+   }
+   .copyright ul li{
+     float: left;
+     font-size: 12px;
+   }
+   .copyright ul li a{
+     margin-left: 10px;
+     line-height:40px;
+     font-size: 12px;
+     text-transform: uppercase;
+   }

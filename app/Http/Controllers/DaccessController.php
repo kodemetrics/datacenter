@@ -3,37 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Datacenter;
+use App\Vendor;
 use App\User;
 use App\Requests;
 use App\Role;
 use Mail;
 use Session;
+use App\AuditLog;
 
 class DaccessController extends Controller
 {
 
     public function __construct(){
 
-             $this->middleware('auth2');
+             //$this->middleware('auth2');
+             $this->middleware('approve', ['only' => ['approveRequest', 'storeApprove']]);
      }
 
     public function index(Request $request){
-        
-    }
-    public function storeMobile(Request $request){
-        //$nerd = new Role;
-        //$nerd->name  = $request->desc;
-        //$nerd->save();
 
-        /*return response()->json([
-            'name' => 'Abigail',
-            'state' => 'CA'
-        ]);*/
-        //header('Content-Type: application/json');
-        echo $request->desc;
     }
+
 
     public function showDasboard(Request $request){
         $all = Requests::all()->count();
@@ -57,57 +51,72 @@ class DaccessController extends Controller
     }
 
     public function showRequestaccess(Request $request){
-            $data = Requests::where('user_id',Session::get('id'))->get();
+            $data = Requests::where('user_id',Auth::id())->get();
             $datacenter = Datacenter::all();
-           return view('requestaccess',compact('data','datacenter'));
+            $users = User::all();
+           return view('requestaccess',compact('data','datacenter','users'));
     }
 
     public function showAllrequest(Request $request){
+           //$data = Requests::with('user')->select('requests.*')->get();
+           $data = \DB::table('users')
+                         ->join('requests', 'users.id', '=', 'requests.user_id')
+                         ->leftjoin('vendors', 'requests.id', '=', 'vendors.requests_id')
+                         ->select('requests.*','vendors.vname','vendors.vorg','vendors.vmobileno', 'users.name as name','users.email as email')
+                         ->orderBy('created_at', 'desc')
+                         ->whereNull('deleted_at')
+                         ->get();
 
-           $data = Requests::all();
            return view('allrequest',compact('data'));
        }
 
-
-    public function editRequest(Requests $id){
-          //$id = Requests::where('id',$id)->get();
+    public function editRequest(Requests  $id){
+          //$id = Requests::where('rx',$id)->first();
           return view('editrequest',compact('id'));
        }
     public function approveRequest(Request $request, $id){
-          $data = Requests::where('rx',$id)->get();
+              //$data = Requests::where('id',$id)->get();
+              $data = Requests::with('user')->where('id',$id)->get();
           return view('approverequest',compact('data'));
        }
 
     public function storeApprove(Request $request, $id){
-          $data = Requests::where('rx',$id)->update([
+          $request->validate(['status' => 'required','comment' => 'required',
+                          'email' => 'required']);
+          $users = User::where('email',$request->email)->first();
+          $data = Requests::where('id',$id)->update([
               'status'=>$request->status,
-              'approvemgr'=>Session::get('name'),
-              'comment'=>$request->comment
+              'approvemgr'=>Auth::user()->name,
+              'comment'=>$request->comment,
+              'assignto'=>$users->name
               ]);
 
-                $task = Requests::with('user')->where('rx',$id)->first();
-                //dd($request->status);
+                $task = Requests::with('user')->where('id',$id)->first();
+
                 $emailsTo = $task['user']['email'];
-                $emailsName = Session::get('name');
-                $emailsFrom = Session::get('email');
-                $emailsCC = "Okaforwilson2@gmail.com";
+                $emailsName = 'Software Notice';
+                $emailsFrom = 'software.notice@abujaelectricity.com';
+                $emailsCC = $request->email;
 
-                //dd($task['user']['email']);
-
-                Mail::send('mailx', compact('task') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ) {
-                $message->to($emailsTo,'')->cc($emailsCC)->subject('DataCenter Access Request');
-                $message->from($emailsFrom,$emailsName);
-            }); 
-         // return redirect()->back()->with('message','Done');
-          return redirect('/allrequest')->with('message','Done');
-
+                try{
+                    Mail::send('mailx', compact('task') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ){
+                    $message->to($emailsTo,'')
+                            ->cc($emailsCC)
+                            ->cc('facilsoftdev@abujaelectricity.com')
+                            ->cc('Samuel.Kyakilika@abujaelectricity.com')
+                            ->subject('DataCenter Access Request');
+                    $message->from($emailsFrom,$emailsName);
+                    });
+                }catch(\Exception $e){
+                    Log::error($e);
+                }
+         AuditLog::create(['username' => Auth::user()->name,'action' => 'Update','ipAddress' =>\Request::ip()]);
+         return redirect('/allrequest')->with('message','Done');
        }
 
     public function updateRequest(Request $request,$id){
 
-          Requests::where('id',$id)->update(['name'=>$request->name,
-                                             'email'=>$request->email,
-                                             'whom'=>$request->whom,
+          Requests::where('id',$id)->update(['whom'=>$request->whom,
                                              'urgency'=>$request->urgency,
                                              'reason'=>$request->reason]);
           return redirect('requestaccess')->with('message','Updated Sucessfully');
@@ -122,41 +131,55 @@ class DaccessController extends Controller
             return redirect('requestaccess')->with('message','Cannot Delete Already Approved Request');
            }
        }
-       
+
     public function storeRequestaccess(Request $request){
+	Log::info("Email - just entered storeRequestAccess function expect a mail soon");
         $request->validate([
-            'name' => 'required',
-            'rx' => 'required',
-            'email' => 'required',
+            'id' => 'required',
             'whom' => 'required',
             'reason' => 'required',
             'urgency' => 'required',
             'dcenter' => 'required',
-            'awareness' => 'required',
-            'sname' => 'required',
-        ]);      
+            'awareness' => 'required'
+        ]);
+
+        $users = User::where('email',$request->sname)->first();
+
         $nerd = new Requests;
-        $nerd->user_id  = Session::get('id');
-        $nerd->name  = $request->name;
-        $nerd->rx  = $request->rx;
-        $nerd->email = $request->email;
+        $nerd->user_id  = Session::get('id') ?: Auth::id();
+        $nerd->id  = $request->id;
         $nerd->whom = $request->whom;
         $nerd->reason = $request->reason;
         $nerd->urgency  = $request->urgency;
         $nerd->dcenter  = $request->dcenter;
         $nerd->awareness  = $request->awareness;
-        $nerd->sname  = $request->sname;
+        $nerd->sname  = $users->name;
+        $nerd->assignto  = $request->assignto = $request->assignto ?? '';
         $nerd->comment  = $request->comment= $request->comment ?? '';
         $nerd->approvemgr  = $request->approvemgr= $request->approvemgr ?? '';
         $nerd->status = $request->status = $request->status ?? 'Pending';
         $nerd->save();
-      
-        $data = array(
-            'name'=> $request->name,'email'=> $request->email,
-            'whom'=> $request->whom,'reason'=> $request->reason,
-            'dcenter'=>$request->dcenter,'urgency'=>$request->urgency,'sname'=>$request->sname,
-            'url'=> url("/requestaccess/approve/".$request->rx),
-          );
+
+        if($request->whom =="Vendor"){
+              $request->validate([
+                  'vname' => 'required','vorg' => 'required','vmobileno' => 'required'
+              ]);
+
+              $vendor = Vendor::create([
+                'requests_id' =>  $request->id,
+                'vname' =>  $request->vname,
+                'vorg' =>  $request->vorg,
+                'vmobileno' =>  $request->vmobileno
+              ]);
+          }
+
+
+          $data = \DB::table('users')
+                        ->join('requests', 'users.id', '=', 'requests.user_id')
+                        ->leftjoin('vendors', 'requests.id', '=', 'vendors.requests_id')
+                        ->select('requests.*','vendors.vname','vendors.vorg','vendors.vmobileno', 'users.name as name','users.email as email')
+                        ->where('requests.id',$request->id)
+                        ->first();
 
                 $To = User::where('role_id',3)->get();
                 $emailsTo = [];
@@ -164,25 +187,28 @@ class DaccessController extends Controller
                 for($i = 0; $i< $emailsLen; $i++){
                     array_push($emailsTo,$To[$i]['email']);
                 }
-                
-                $emailsCC = [];
-                $Cc = User::where('role_id',2)->get();
-                foreach($Cc as $Cc){
-                    array_push($emailsCC,$Cc->email);
-                }
-                
-                $emailsFrom = $request->email;
-                $emailsName = $request->name;
 
-               
-            Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ) {
-            $message->to($emailsTo,'')->cc($emailsCC)->subject('Datacenter Access Request');
-            $message->from($emailsFrom,$emailsName);
-            
-        });  
-        
-        
-         return redirect()->back()->with('message','Created Sucessfully');
+                $emailsCC = 'facilsoftdev@abujaelectricity.com';
+                $emailsFrom = 'software.notice@abujaelectricity.com';
+                $SupervisorEmail = $request->sname;
+	$err = null;
+        try{
+	        Log::info("Email attempting to send");
+            Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$SupervisorEmail) {
+            $message->to($emailsTo,'')
+                    ->cc($emailsCC)
+                    ->cc($SupervisorEmail)
+                    ->cc('samuel.kyakilika@abujaelectricity.com')
+                    ->subject('Datacenter Access Request')
+                    ->from($emailsFrom,'Software Notice');
+            });
+	    Log::info("Email sent");
+        }catch (\Exception $e){
+	    $err = $e->getMessage();
+            Log::error($e);
+        }
+          AuditLog::create(['username' => Auth::user()->name,'action' => 'Create','ipAddress' =>\Request::ip()]);
+          return redirect()->back()->with('message','Created Sucessfully ' . $err);
        }
 
 

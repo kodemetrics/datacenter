@@ -19,9 +19,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
-
-        //$user = User::where('id',Session::get('id'))->first();
-        //View::share('user', $user);
+        $user = User::all();
+        View::share('users', $user);
     }
 
     /**

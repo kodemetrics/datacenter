@@ -12,13 +12,14 @@
         <title>AEDC</title>
 
         <!-- App css -->
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/core.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/components.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/menu.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/core.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/components.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/icons.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/pages.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/menu.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/responsive.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
 
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -128,6 +129,21 @@
             </div>
           </section>
           <!-- END HOME -->
+          <footer class="copyright">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-md-6 sm-copyright">
+                           <p>Copyright © {{date('Y')}} All rights reserved </p>
+                       </div>
+                       <div class="col-md-6">
+                           <ul>
+                               <li><a href="#" onclick="window.open('assets/doc/data-protection-policy.pdf', '_self'); return true;">Privacy policy</a></li>
+                               <li><a href="#" onclick="window.open('assets/doc/data-protection-policy.pdf', '_blank', 'fullscreen=yes'); return true;">Data protection policy</a></li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+          </footer>
 
         <script>
             var resizefunc = [];

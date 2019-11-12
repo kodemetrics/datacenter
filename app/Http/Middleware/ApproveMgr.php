@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class ApproveMgr
 {
@@ -16,12 +17,13 @@ class ApproveMgr
      */
     public function handle($request, Closure $next)
     {
-        $user = User::where('name',$request->session()->get('name'))->first();
-        if ($user->role_id==3) {
+       // $user = User::where('name',$request->session()->get('name'))->first();
+        if (Auth::user()->role_id==3) {
             return $next($request);
         }else{
             return redirect('/dashboard')->with('message','You are not authorized to view this page');
         }
+        
         
     }
 }

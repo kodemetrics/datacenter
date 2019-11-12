@@ -11,8 +11,11 @@ class Requests extends Model
     protected $table = 'requests';
     protected $dates = ['deleted_at'];
 
-    public function user()
-    {
+    public function user(){
         return $this->belongsTo('App\User');
+    }
+
+    public function vendor(){
+        return $this->hasOne('App\Vendor');
     }
 }

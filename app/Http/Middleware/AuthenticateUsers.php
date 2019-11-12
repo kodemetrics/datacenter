@@ -21,7 +21,7 @@ class AuthenticateUsers
             return redirect('/');
         }
 
-        return redirect('/dashboard');
-        
+        //return redirect('/dashboard');
+        return $next($request);
     }
 }

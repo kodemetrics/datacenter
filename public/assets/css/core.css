@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Varela+Round);
 @import 'https://fonts.googleapis.com/css?family=Hind+Madurai:600,700';
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700&display=swap');
 /*
 Template Name: Zircos Dashboard
 Author: CoderThemes
@@ -23,6 +24,7 @@ File: Core
 ============= */
 body {
   font-family: 'Varela Round', sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding-bottom: 65px;
   overflow-x: hidden;
@@ -545,13 +547,16 @@ a:focus {
 .label-success {
   background-color: #4bd396;
 }
-.label-info {
+.label-info,
+.label-low {
   background-color: #3ac9d6;
 }
-.label-warning {
+.label-warning,
+.label-medium {
   background-color: #f9c851;
 }
-.label-danger {
+.label-danger,
+.label-high  {
   background-color: #f5707a;
 }
 .label-purple {

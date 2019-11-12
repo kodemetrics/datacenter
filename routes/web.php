@@ -12,26 +12,24 @@
 */
 
 
+Route::post('/', "Auth\LoginController@attemptLogin")->name('login')->middleware('guest');
+Route::get('/', "Auth\LoginController@welcome")->name('welcome')->middleware('guest');
+Route::get('/logout','LoginController@logout');
 
+/*Route::get('/madam', function () {
+    $task = \App\Requests::with('user')->where('rx','1537268292')->first();
+    return view('mailx',compact('task'));
+});*/
 
-Route::get('/', function () {
-    return view('Welcome');
-});
+Route::group(['middleware' => 'auth'], function() {
 
-Route::get('/demo', function () {
-    return redirect('/dashboard')->with('message','Welcome...!');
-});
-
-//Route::post('/','LoginController@index');  
-Route::get('/logout','LoginController@logout');  
-Route::post('/','LoginController@apiAuth');  
-Route::post('/mobile','DaccessController@storeMobile');  
+Route::post('/mobile','DaccessController@storeMobile');
 Route::get('/dashboard','DaccessController@showDasboard');
 Route::get('/requestaccess','DaccessController@showRequestaccess');
 Route::get('/requestaccess/edit/{id}','DaccessController@editRequest');
 Route::get('/requestaccess/delete/{id}','DaccessController@deleteRequest');
-Route::get('/requestaccess/approve/{id}','DaccessController@approveRequest')->middleware('approve');
-Route::post('/requestaccess/approve/{id}','DaccessController@storeApprove')->middleware('approve');
+Route::get('/requestaccess/approve/{id}','DaccessController@approveRequest');//->middleware('auth2','approve');
+Route::post('/requestaccess/approve/{id}','DaccessController@storeApprove');//->middleware('auth2','approve');
 Route::get('/allrequest','DaccessController@showAllrequest');
 
 
@@ -55,4 +53,4 @@ Route::post('/adddatacenter','DaccessController@storeAdddatacenter');
 Route::post('/addrole','DaccessController@storeAddrole');
 Route::post('/addapprovemgr','DaccessController@storeAddapprovemgr');
 
-
+});

@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box">
-                                
+
                                      <table class="table bordered">
                                           <thead>
                                              <tr>
@@ -41,35 +41,56 @@
                                               @foreach($data as $d)
                                                 <tr>
                                                         <td>{{$d->created_at}}</td>
-                                                        <td>{{$d->name}}</td>
+                                                        <td>{{$d->user->name}}</td>
                                                         <td>{{$d->whom}}</td>
                                                         <td>{{$d->reason}}</td>
                                                         <td>{{$d->urgency}}</td>
                                                         <td>{{$d->status}}</td>
                                                         <td>{{$d->id}}</td>
-                                                </tr>  
+                                                </tr>
                                                 @endforeach
                                           </tbody>
                                      </table>
                                    <div class="row">
-                                       
+
                                      <form method="POST" class="col-sm-6">
+                                       @if ($errors->any())
+                                           <div class="alert alert-danger">
+                                               <ul>
+                                                   @foreach ($errors->all() as $error)
+                                                       <li>{{ $error }}</li>
+                                                   @endforeach
+                                               </ul>
+                                           </div>
+                                       @endif
+
                                          {{ csrf_field() }}
                                          <div class="form-group">
                                             <label>Approve</label>
                                              <select name="status" class="form-control" >
-                                                 <option value="" disable>--choose--</option>
+                                                 <option value="" disable>--Choose--</option>
                                                  <option value="Approved">Yes</option>
-                                                 <option value="Rejected">No</option>
+                                                 <option value="Denied">No</option>
                                              </select>
                                          </div>
+
+                                         <div class="form-group">
+                                            <label>AssignTo</label>
+                                            <select name="email" class="form-control">
+                                              <option  selected disabled>-- Choose --</option>
+                                                @foreach($users as $user)
+                                                   <option value="{{$user->email}}">{{$user->name}}</option>
+                                                @endforeach
+                                            </select>
+                                         </div>
+
                                          <div class="form-group">
                                             <label>Comments</label>
-                                            <textarea name="comment" class="form-control" cols="30" rows="10"></textarea>
+                                            <textarea name="comment" class="form-control" cols="30" rows="4"></textarea>
                                          </div>
 
                                          <input type="submit" value="submit" name="submit" class="btn btn-primary">
-                                     
+
                                      </form>
                                      </div>
                           </div>

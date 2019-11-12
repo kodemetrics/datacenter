@@ -26,7 +26,7 @@
 		<link rel="stylesheet" href="{{ URL::asset('plugins/switchery/switchery.min.css')}}">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-        
+
 
         <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -78,7 +78,7 @@
                                 <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true"><i class="ti ti-user  mdi-18"></i><!--<img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle">--> </a>
                                 <ul class="dropdown-menu dropdown-menu-right arrow-dropdown-menu arrow-menu-right user-list notify-list">
                                     <li class="text-center">
-                                        <h5>Hi, {{Session::get('name')}}</h5>
+                                        <h5>Hi, {{Auth::user()->name}}</h5>
                                     </li>
                                       <li><a href="{{ url('/logout') }}"><i class="ti-power-off m-r-5"></i> Logout</a></li>
                                 </ul>
@@ -121,13 +121,13 @@
                                 <a href="{{ url('allrequest') }}"><i class="mdi mdi-comment-text"></i> All Request</a>
                             </li>
 
-                           @if(Session::get('isAdmin') ==1)
+                           @if(Auth::user()->isAdmin ==1)
                                 <li class="has-submenu">
                                     <a href="{{ url('settings') }}"><i class="mdi mdi mdi-settings "></i>Settings</a>
                                 </li>
                            @endif
 
-                      
+
                         </ul>
                         <!-- End navigation menu -->
                     </div> <!-- end #navigation -->
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                         @endif-->
-                        
+
                     @yield('content')
                 </div>
         </div>
@@ -173,6 +173,7 @@
 
         <!-- jQuery  -->
         <script src="{{ URL::asset('assets/js/jquery.min.js')}}"></script>
+        <script src="{{ URL::asset('assets/js/index.js')}}"></script>
         <script src="{{ URL::asset('assets/js/bootstrap.min.js')}}"></script>
         <script src="{{ URL::asset('assets/js/detect.js')}}"></script>
         <script src="{{ URL::asset('assets/js/fastclick.js')}}"></script>
@@ -192,7 +193,7 @@
 		<script src="{{ URL::asset('/plugins/morris/morris.min.js')}}"></script>
 		<script src="{{ URL::asset('/plugins/raphael/raphael-min.js')}}"></script> -->
 
-        <!-- Dashboard init 
+        <!-- Dashboard init
         <script src="{{ URL::asset('assets/pages/jquery.dashboard.js')}}"></script> -->
 
         <!-- App js -->
@@ -206,7 +207,6 @@
                         toastr.info(value,'');
                        //alert(value);
                     }
-           
         </script>
 
     </body>

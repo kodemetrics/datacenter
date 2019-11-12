@@ -27,14 +27,14 @@
                                 <div class="col-md-6 m-t-10">
                                     <form method="POST">
                                         {{ csrf_field() }}
-                                        <div class="form-group">
+                                      <!--  <div class="form-group">
                                             <label >Name</label>
-                                            <input type="text" class="form-control" name="name" value="{{$id->name}}" placeholder="Enter email">
+                                            <input type="text" class="form-control" name="name" value="" placeholder="Enter email">
                                         </div>
                                         <div class="form-group">
                                             <label >Email</label>
-                                            <input type="email" class="form-control" name="email" value="{{$id->email}}"  placeholder="Enter email">
-                                        </div>
+                                            <input type="email" class="form-control" name="email" value=""  placeholder="Enter email">
+                                        </div> -->
                                         <div class="form-group">
                                             <label >For Whom</label>
                                             <select name="whom" class="form-control">
@@ -64,8 +64,8 @@
                                 </div>
 
                                 <div class="col-md-6 m-t-10">
-                                
-                                </div>    
+
+                                </div>
 
                      </div>
                 </div>

@@ -14,11 +14,10 @@ class CreateRequestsTable extends Migration
     public function up()
     {
         Schema::create('requests', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('rx',50);
+            //$table->integer('id')->unsigned();
+            $table->string('id',50)->primary();
             $table->integer('user_id');
-            $table->string('name',50);
-            $table->string('email',50);
+            $table->string('assignto');
             $table->string('whom',50);
             $table->string('dcenter',50);
             $table->string('reason');
@@ -30,6 +29,8 @@ class CreateRequestsTable extends Migration
             $table->string('approvemgr');
             $table->softDeletes();
             $table->timestamps();
+          //$table->primary(['rx', 'reason']);
+          //DB::statement('ALTER TABLE requests MODIFY id INTEGER NOT NULL AUTO_INCREMENT');
         });
     }
 

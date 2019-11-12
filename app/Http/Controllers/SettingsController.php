@@ -8,27 +8,52 @@ use App\Role;
 use App\User;
 use App\Requests;
 use App\Approval;
+use App\AuditLog;
 use DB;
-
+use Mail;
+use Illuminate\Support\Facades\Log;
 
 class SettingsController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth2');
-        $this->middleware('superadmin');
+       // $this->middleware('auth2');
+       //$this->middleware('superadmin');
+    }
+
+    public function getSwiftMailer(){
+        $transport = new \Swift_SmtpTransport(\Config::get('mail.host'), \Config::get('mail.port'), \Config::get('mail.encryption'));
+        $transport->setStreamOptions(['ssl' => \Config::get('mail.ssloptions')]);
+        $transport->setUsername(\Config::get('mail.username'));
+        $transport->setPassword(\Config::get('mail.password'));
+        
+        $mailer = new \Swift_Mailer($transport);
+        return $mailer;
     }
 
     public function showSettings(Request $request){
+/*	try{Log::info("Email: Sending...");
+	 $title = "Test";
+         $content = "Test"; 	 
+         Mail::send('test', ['title' => $title, 'content' => $content], function ($message)
+         {
+            $message->from('software.notice@abujaelectricity.com', 'Software Notice');
+            $message->to('emem.isaac@abujaelectricity.com');
+         });Log::info("Email: Sent!");
+	}catch(\Exception $e){ Log::error("Email: " . $e); }
+
+        return response()->json(['message' => 'Request completed']);*/
+
 
         $roles = Role::all();
         $datacenters = Datacenter::all();
         $users = User::all();
+        $auditlog = AuditLog::all();
         //$approves = User::where('role_id',2)->get();
         $requests = Requests::onlyTrashed()->get();
         $approves =  DB::table('users')->join('roles', 'users.role_id', '=', 'roles.id')
                    ->whereIn('users.role_id', [2, 3])->select('users.*', 'roles.name as rolename')->get();
-            
-        return view('settings',compact('roles','datacenters','users','approves','requests'));
+
+        return view('settings',compact('roles','datacenters','users','approves','requests','auditlog'));
         //return $approves;
      }
 
@@ -42,7 +67,6 @@ class SettingsController extends Controller
      }
     public function addRoles(Request $request){
            $role = new role;
-           //$role->code = $request->code;
            $role->name = $request->name;
            $role->save();
            //$role->save($request->all());

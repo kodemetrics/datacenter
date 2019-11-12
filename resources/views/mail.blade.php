@@ -1,12 +1,11 @@
 <html>
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
   <style type="text/css">
-
+   @import url('https://fonts.googleapis.com/css?family=Poppins|Roboto|Raleway|');
  body{
-    font-family: Courier, sans-serif;
+    font-family: 'Roboto', sans-serif;
     table-layout: fixed;
     width: 100%;
     background-color: #eee;
@@ -21,10 +20,16 @@
 .width{
     margin:2% 20%;
     border-radius:2px;
- } 
+ }
+
+ @media screen and (max-width: 767px) {
+   .width{
+     margin:2% 2%;
+    }
+  }
 
  .footer{
-   font-size: 10px;
+    font-size: 10px;
  }
 
 .table {
@@ -63,7 +68,7 @@
 
 .table tbody + tbody {
   border-top: 2px solid #dee2e6;
-  
+
 }
 
 .table .table {
@@ -367,44 +372,44 @@
               </tr>
           </thead>
            <tbody>
-               
+
                <tr>
-                  <td>Name:</td>
-                  <td>{{$data['name']}}</td>
+                  <td>Applicant Name:</td>
+                  <td>{{$data->name}}</td>
                </tr>
                <tr>
-                  <td>Whom:</td>
-                  <td>{{$data['whom']}}</td>
+                  <td>Staff/Visitor:</td>
+                  <td>{{$data->whom}}</td>
                </tr>
                <tr>
                   <td>DataCenter:</td>
-                  <td>{{$data['dcenter']}}</td>
+                  <td>{{$data->dcenter}}</td>
                </tr>
                <tr>
                   <td>Priority:</td>
-                  <td>{{$data['urgency']}}</td>
+                  <td>{{$data->urgency}}</td>
                </tr>
                <tr>
-                  <td>Supervisor Name:</td>
-                  <td>{{$data['sname']}}</td>
+                  <td>Applicant Supervisor Name:</td>
+                  <td>{{$data->sname}}</td>
                </tr>
                <tr>
                   <td>Reason:</td>
-                  <td>{{$data['reason']}}</td>
+                  <td>{{$data->reason}}</td>
                </tr>
-              
+
             </tbody>
             <tfoot>
               <tr>
                   <td colspan="2">
-                    <span>To approve please follow this link</span>  <a class="link" href="{{$data['url']}}">click here</a>  
+                    <span>To approve please follow this link</span>  <a class="link" href="{{url("/requestaccess/approve/".$data->id)}}">click here</a>
                   </td>
               </tr>
 
             </tfoot>
         </table>
-       
-    </div>   
-  </div>      
+
+    </div>
+  </div>
 </body>
 </html>
