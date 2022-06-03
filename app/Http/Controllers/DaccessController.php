@@ -44,10 +44,6 @@ class DaccessController extends Controller
           );
 
         return view('dashboard',compact('data'));
-       // return User::find(1)->requests;
-       // return  $task = Requests::with('user')->where('id', 1)->get();
-        //return Requests::find(2)->user;
-       // return $data;
     }
 
     public function showRequestaccess(Request $request){
@@ -71,11 +67,11 @@ class DaccessController extends Controller
        }
 
     public function editRequest(Requests  $id){
-          //$id = Requests::where('rx',$id)->first();
           return view('editrequest',compact('id'));
        }
+
+
     public function approveRequest(Request $request, $id){
-              //$data = Requests::where('id',$id)->get();
               $data = Requests::with('user')->where('id',$id)->get();
           return view('approverequest',compact('data'));
        }
@@ -91,25 +87,6 @@ class DaccessController extends Controller
               'assignto'=>$users->name
               ]);
 
-                $task = Requests::with('user')->where('id',$id)->first();
-
-                $emailsTo = $task['user']['email'];
-                $emailsName = 'Software Notice';
-                $emailsFrom = 'software.notice@abujaelectricity.com';
-                $emailsCC = $request->email;
-
-                try{
-                    Mail::send('mailx', compact('task') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$emailsName ){
-                    $message->to($emailsTo,'')
-                            ->cc($emailsCC)
-                            ->cc('facilsoftdev@abujaelectricity.com')
-                            ->cc('Samuel.Kyakilika@abujaelectricity.com')
-                            ->subject('DataCenter Access Request');
-                    $message->from($emailsFrom,$emailsName);
-                    });
-                }catch(\Exception $e){
-                    Log::error($e);
-                }
          AuditLog::create(['username' => Auth::user()->name,'action' => 'Update','ipAddress' =>\Request::ip()]);
          return redirect('/allrequest')->with('message','Done');
        }
@@ -181,32 +158,7 @@ class DaccessController extends Controller
                         ->where('requests.id',$request->id)
                         ->first();
 
-                $To = User::where('role_id',3)->get();
-                $emailsTo = [];
-                $emailsLen = count($To);
-                for($i = 0; $i< $emailsLen; $i++){
-                    array_push($emailsTo,$To[$i]['email']);
-                }
-
-                $emailsCC = 'facilsoftdev@abujaelectricity.com';
-                $emailsFrom = 'software.notice@abujaelectricity.com';
-                $SupervisorEmail = $request->sname;
-	$err = null;
-        try{
-	        Log::info("Email attempting to send");
-            Mail::send('mail', compact('data') , function($message) use($emailsTo,$emailsCC,$emailsFrom,$SupervisorEmail) {
-            $message->to($emailsTo,'')
-                    ->cc($emailsCC)
-                    ->cc($SupervisorEmail)
-                    ->cc('samuel.kyakilika@abujaelectricity.com')
-                    ->subject('Datacenter Access Request')
-                    ->from($emailsFrom,'Software Notice');
-            });
-	    Log::info("Email sent");
-        }catch (\Exception $e){
-	    $err = $e->getMessage();
-            Log::error($e);
-        }
+    
           AuditLog::create(['username' => Auth::user()->name,'action' => 'Create','ipAddress' =>\Request::ip()]);
           return redirect()->back()->with('message','Created Sucessfully ' . $err);
        }
